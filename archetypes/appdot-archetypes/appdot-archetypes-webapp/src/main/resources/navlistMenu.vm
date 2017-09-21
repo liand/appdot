@@ -1,0 +1,36 @@
+#macro( displayCssMenu $menu )
+  #if ($displayer.isAllowed($menu))
+      ## set menu title  flag
+      #set ($title = $menu.title)
+      #set ($flag =false)
+	  #foreach ($menuItem in $menu.components)
+	      #if ($displayer.isAllowed($menuItem))
+	        #set ($flag=true)
+	      #end
+	  #end
+	  #if($flag)
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<a data-toggle="collapse"
+						data-parent="#accordionMenu" href="#$menu.url">$title</a>
+			</div>
+			
+			<div id="$menu.url" class="panel-collapse collapse #if($menu.name == $currentMenu)in#end">
+					<div class="panel-body">
+						<ul class="nav nav-pills nav-stack">
+							
+      #foreach ($menuItem in $menu.components)
+        #if ($displayer.isAllowed($menuItem))
+          #set ($title = $menuItem.title)
+          <li #if ($request.getRequestURI().contains($menuItem.url))class="active"#end><a href="$menuItem.url" title="$title" #if($menuItem.target)target="$menuItem.target"#end>${title}</a></li>
+        #end
+	  #end
+                        </ul>
+                    </div>
+            </div>
+        </div>
+  #end
+ #end
+#end
+
+#displayCssMenu($menu)

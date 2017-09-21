@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+  <name>appdot-archetypes-api-lib</name>
+  <comment>AppDot is a full-stack framework for building web applications on the JVM. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
+  <projects>
+    <project>appdot-archetypes-core-lib</project>
+    <project>commons-lang</project>
+    <project>appdot-data</project>
+    <project>appdot-service</project>
+    <project>appdot-test</project>
+    <project>appdot-rest</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>

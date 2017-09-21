@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="archetypes" basedir=".">
+    <property name="archetype" value="${archetype}"/>
+	<property name="test.dir" value="${basedir}/target"/>
+
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        <classpath>
+            <pathelement location="lib/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+
+    <target name="build-archetype" description="Builds Archetypes">
+        <property name="dest" value=""/>
+        <buildArchetype module="${module}" dest="${dest}"/>
+    </target>
+
+    <target name="install-module" description="Installs Archetype">
+        <property name="dir" value="appdot-archetypes"/>
+
+        <mvn command="archetype:create-from-project -DpackageName=org.appdot.archetypes" dir="${dir}"/>
+
+        <replace file="${dir}/target/generated-sources/archetype/pom.xml">
+            <replacetoken><![CDATA[</name>]]></replacetoken>
+            <replacevalue><![CDATA[</name>
+        <distributionManagement>
+        <repository>
+            <id>appdot-releases</id>
+            <name>AppDot Release Repository</name>
+            <url>http://repo.appdot.org/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>appdot-snapshots</id>
+            <name>AppDot Snapshot Repository</name>
+            <url>http://repo.appdot.org/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <site>
+            <id>appdot-site</id>
+            <name>AppDot Maven Site</name>
+            <url>scp://static.appdot.org/var/www/appdot-site</url>
+        </site>
+    </distributionManagement>]]></replacevalue>
+        </replace>
+        <!-- Add jdbc.password back in since archetype plugin strips it out -->
+        <replace file="${dir}/target/generated-sources/archetype/src/main/resources/archetype-resources/pom.xml">
+            <replacetoken><![CDATA[<jdbc.username>sa</jdbc.username>]]></replacetoken>
+            <replacevalue><![CDATA[<jdbc.username>sa</jdbc.username>
+        <jdbc.password></jdbc.password>]]></replacevalue>
+        </replace>
+
+        <mvn command="install" dir="${dir}/target/generated-sources/archetype"/>
+    </target>
+	
+    <target name="test" description="Tests that 'mvn integration-test' works with archetype" unless="skipTests">
+        <echo message="Creating archetype 'AppDot-Archetypes', version '${version}'"/>
+        <test archetype="appdot-archetypes-archetype" version="${version}" />
+    </target>
+
+    <target name="deploy" description="Deploys archetype">
+		<echo message="Deploying archetype '${archetype}', version '${version}'"/>
+        <property name="dir" value="appdot-archetypes"/>
+        <mvn command="deploy" dir="${dir}/target/generated-sources/archetype"/>
+    </target>
+
+    <macrodef name="maven">
+        <attribute name="dir"/>
+        <attribute name="name" default=""/>
+        <attribute name="archetype" default=""/>
+        <attribute name="version" default=""/>
+        <attribute name="command"
+                default="archetype:generate -B -DarchetypeGroupId=org.appdot.archetypes -DarchetypeArtifactId=@{archetype}
+            -DarchetypeVersion=@{version} -DgroupId=com.mycompany -DartifactId=@{archetype} -DpackageName=com.mycompany
+            -DarchetypeCatalog=local"/>
+
+        <sequential>
+            <mkdir dir="${test.dir}"/>
+            <mvn dir="${test.dir}" command="@{command}"/>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="buildArchetype">
+        <attribute name="module" default=""/>
+        <attribute name="dir" default="appdot-archetypes"/>
+        <attribute name="dest" default=""/>
+
+        <sequential>
+            <mvn dir="@{dir}" command="archetype:create-from-project -DdefaultEncoding=UTF-8 -DpackageName=org.appdot.archetypes"/>
+
+            <!-- Add jdbc.password back in since archetype plugin strips it out -->
+            <replace file="@{dir}/target/generated-sources/archetype/src/main/resources/archetype-resources/pom.xml">
+                <replacetoken><![CDATA[<jdbc.username>sa</jdbc.username>]]></replacetoken>
+                <replacevalue><![CDATA[<jdbc.username>sa</jdbc.username>
+        <jdbc.password></jdbc.password>]]></replacevalue>
+            </replace>
+            <mvn command="install" dir="@{dir}/target/generated-sources/archetype"/>
+        </sequential>
+    </macrodef>
+	
+    <macrodef name="test">
+        <attribute name="archetype"/>
+        <attribute name="version"/>
+
+        <sequential>
+            <delete dir="${test.dir}/@{archetype}"/>
+            <maven dir="${test.dir}" archetype="@{archetype}" version="@{version}"/>
+            <!-- verify: runs and verifies result. locale=en as otherwise there are webtests that fail -->
+            <mvn dir="${test.dir}/@{archetype}" command="verify"/>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="mvn">
+        <attribute name="command"/>
+        <attribute name="dir"/>
+
+        <sequential>
+            <exec dir="@{dir}" executable="mvn.bat" os="Windows 7" failonerror="true">
+                <arg line="@{command}"/>
+            </exec>
+            <exec dir="@{dir}" executable="mvn" os="Mac OS X" failonerror="true">
+                <arg line="@{command}"/>
+            </exec>
+            <exec dir="@{dir}" executable="/usr/local/maven/bin/mvn" os="Linux" failonerror="true">
+                <arg line="@{command}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+</project>

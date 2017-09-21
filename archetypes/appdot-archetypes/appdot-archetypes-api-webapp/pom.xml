@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.appdot.archetypes</groupId>
+		<artifactId>appdot-archetypes</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>appdot-archetypes-api-webapp</artifactId>
+	<packaging>war</packaging>
+	<name>AppDot Modular ArcheType :: Api Web Application</name>
+	<url>http://maven.apache.org</url>
+
+	<build>
+		<!-- Filtering main resources files -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>applicationContext-resource.xml</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<!-- Filtering test resources files -->
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+	</build>
+
+	<dependencies>
+		<!-- Internal -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>appdot-archetypes-api-lib</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		
+
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit-dep</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- jdbc driver -->
+		<dependency>
+			<groupId>${jdbc.groupId}</groupId>
+			<artifactId>${jdbc.artifactId}</artifactId>
+			<version>${jdbc.version}</version>
+		</dependency>
+		
+		<!-- Security -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+	</dependencies>
+</project>

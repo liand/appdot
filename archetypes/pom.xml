@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.appdot</groupId>
+        <artifactId>appdot</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.appdot.archetypes</groupId>
+    <artifactId>archetypes</artifactId>
+    <packaging>pom</packaging>
+    <name>AppDot Archetype Modules</name>
+
+    <description>
+        AppDot archetypes are used to create new projects with AppDot dependencies and necessary plugins.
+    </description>
+
+    <modules>
+        <module>appdot-archetypes</module>
+    </modules>
+	
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>build-archetype</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <delete dir="target/${module}-archetype" />
+                                <ant antfile="build.xml" dir="." target="install-module" />
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test-archetype</id>
+                        <phase>integration-test</phase>
+                        <configuration>
+                            <tasks>
+                                <ant antfile="build.xml" dir="." target="test">
+                                    <property name="archetype" value="${project.artifactId}-archetype" />
+									<property name="version" value="${project.version}" />
+                                </ant>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>deploy-archetype</id>
+                        <phase>deploy</phase>
+                        <configuration>
+                            <tasks>
+                                <ant antfile="build.xml" dir="." target="deploy">
+                                    <property name="version" value="${project.version}" />
+                                </ant>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

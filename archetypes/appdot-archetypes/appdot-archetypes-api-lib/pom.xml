@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.appdot.archetypes</groupId>
+		<artifactId>appdot-archetypes</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>appdot-archetypes-api-lib</artifactId>
+	<name>AppDot Modular ArcheType :: Api Lib</name>
+	<url>http://maven.apache.org</url>
+
+	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+
+	</build>
+
+	<dependencies>
+		<!-- Internal -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>appdot-archetypes-core-lib</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<!-- Appdot Framework -->
+		<dependency>
+			<groupId>org.appdot</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.appdot</groupId>
+			<artifactId>appdot-data</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.appdot</groupId>
+			<artifactId>appdot-service</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.appdot</groupId>
+			<artifactId>appdot-rest</artifactId>
+		</dependency>
+
+		<!-- Shiro Security -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+		</dependency>
+
+		<!-- Spring annotation -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+
+		<!-- Rest begin -->
+		<!-- Jersey Rest Framework -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-spring</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<!-- Rest end -->
+
+		<!-- dbcp connection pool -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>${jdbc.groupId}</groupId>
+			<artifactId>${jdbc.artifactId}</artifactId>
+			<version>${jdbc.version}</version>
+		</dependency>
+
+		<!-- pojo copy -->
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+		</dependency>
+
+		<!-- Test Begin ... -->
+		<dependency>
+			<groupId>org.appdot</groupId>
+			<artifactId>appdot-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+	</dependencies>
+</project>
